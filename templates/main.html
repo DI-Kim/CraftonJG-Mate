@@ -81,6 +81,50 @@
                     }
                 });
             });
+
+            // post item
+            function postItem() {
+                let title = $("#item-title").val();
+                let content = $("#item-content").val();
+                let item_link = $("#item-link").val();
+                let chat_link = $("#chat-link").val();
+                let time_exp = $("#item-time").val();
+                let min_people = $("#item-min-people").val();
+
+                console.log(
+                    title,
+                    content,
+                    item_link,
+                    chat_link,
+                    time_exp,
+                    min_people
+                );
+
+                $.ajax({
+                    type: "POST",
+                    url: "/main",
+                    data: {
+                        title,
+                        content,
+                        item_link,
+                        chat_link,
+                        time_exp,
+                        min_people,
+                    },
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            alert("포스팅 성공!!!");
+                            window.location.reload();
+                        } else {
+                            if (response["result"] == "fail") {
+                                alert(response["msg"]);
+                            } else {
+                                alert("❌error occured");
+                            }
+                        }
+                    },
+                });
+            }
         </script>
 
         <title>배달의 MATE</title>
@@ -120,18 +164,16 @@
                     <div class="card-content">
                         <div class="media">
                             <div class="media-content">
-                                <p class="title is-4">진행 중...</p>
+                                <p class="title is-4">{{ title }}</p>
                             </div>
                         </div>
 
                         <div class="content">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                            <a href="#">#css</a> <a href="#">#responsive</a>
+                            {{content}}
+                            <a href="{{item_link}}">item_link</a>
+                            <a href="#">#responsive</a>
                             <br />
-                            <time datetime="2016-1-1"
-                                >11:09 PM - 1 Jan 2016</time
-                            >
+                            <time datetime="2016-1-1">{{ time_exp }}</time>
                         </div>
                     </div>
                 </div>
@@ -199,6 +241,7 @@
                 </div>
             </div>
 
+            <!-- make button -->
             <div class="make-btn-helper">
                 <i
                     class="fa-solid fa-plus fa-xl modal-button"
@@ -220,6 +263,7 @@
                                 class="input"
                                 type="text"
                                 placeholder="제목(상호명,상품명)"
+                                id="item-title"
                             />
                         </div>
                         <div class="field">
@@ -227,10 +271,12 @@
                                 class="textarea"
                                 placeholder="내용을 입력해주세요"
                                 rows="5"
+                                id="item-content"
                             ></textarea>
                         </div>
                         <div class="field">
                             <input
+                                id="item-link"
                                 class="input"
                                 type="text"
                                 placeholder="제품 링크(배민 링크,상품 링크 등)"
@@ -238,6 +284,7 @@
                         </div>
                         <div class="field">
                             <input
+                                id="chat-link"
                                 class="input"
                                 type="text"
                                 placeholder="오픈카카오톡 링크"
@@ -247,44 +294,44 @@
                         <div class="columns half-flex">
                             <div class="column half-flex half">
                                 <div class="field half-width">
-                                    <label style="color: black">기한 : </label>
+                                    <label style="color: black"
+                                        >기한(시간)
+                                    </label>
                                 </div>
                                 <div class="hour-select half-width">
-                                    <select class="half-width">
-                                        <option>1시간</option>
-                                        <option>2시간</option>
-                                        <option>3시간</option>
-                                        <option>4시간</option>
-                                        <option>5시간</option>
-                                        <option>6시간</option>
-                                        <option>6시간</option>
-                                        <option>7시간</option>
-                                        <option>8시간</option>
-                                        <option>9시간</option>
-                                        <option>10시간</option>
-                                        <option>11시간</option>
-                                        <option>12시간</option>
-                                        <option>1일</option>
-                                        <option>2일</option>
-                                        <option>3일</option>
+                                    <select class="half-width" id="item-time">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>9</option>
+                                        <option>12</option>
+                                        <option>24</option>
+                                        <option>48</option>
+                                        <option>72</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="column half half-flex">
                                 <div class="field half-width">
                                     <label style="color: black"
-                                        >최소인원 :
+                                        >최소인원(명)
                                     </label>
                                 </div>
                                 <div class="min-select half-width">
-                                    <select class="half-width">
-                                        <option>2명</option>
-                                        <option>3명</option>
-                                        <option>4명</option>
-                                        <option>5명</option>
-                                        <option>6명</option>
-                                        <option>7명</option>
-                                        <option>8명</option>
+                                    <select
+                                        class="half-width"
+                                        id="item-min-people"
+                                    >
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
                                     </select>
                                 </div>
                             </div>
@@ -292,7 +339,12 @@
                     </section>
                     <footer class="modal-card-foot half-flex">
                         <button class="button sub-bg-color half">취소</button>
-                        <button class="button main-bg-color half">등록</button>
+                        <button
+                            class="button main-bg-color half"
+                            onclick="postItem()"
+                        >
+                            등록
+                        </button>
                     </footer>
                 </div>
             </div>
