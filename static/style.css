@@ -6,11 +6,16 @@
         margin-right: auto;
     }
 }
+.line {
+    height: 1px;
+    background-color: black;
+    width: 100%;
+}
 body {
     background-color: #fff6f0;
 }
 .container {
-    padding-top: 70px;
+    padding-top: 50px;
 }
 .margin-50 {
     margin-top: 50px;
@@ -32,6 +37,7 @@ body {
     color: white;
     background-color: #e74c3c;
 }
+
 .half-flex {
     display: flex;
     justify-content: space-between;
@@ -65,7 +71,13 @@ body {
     height: 200px;
     width: 200px;
 }
-
+.link-color{
+    color: white;
+    background-color:#2ecc71;
+}
+.link-field{
+    margin-top: 70px;
+}
 .profile {
     background-color: aqua;
     padding: 10px;
