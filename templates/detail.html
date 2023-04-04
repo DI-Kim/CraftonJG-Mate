@@ -4,12 +4,78 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="static/reset.css" />
+
+        <script
+            src="https://kit.fontawesome.com/c9149b938d.js"
+            crossorigin="anonymous"
+        ></script>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+        />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="./static/style.css" />
         <title>배달의 MATE | 상세페이지</title>
     </head>
     <body>
-        <p>
-            참여인원 <span id="current">1</span> / <span id="minimum">3</span>
-        </p>
+        <div class="container is-fluid">
+            <div class="columns is-half is-offset-one-quarter">
+                <div class="column is-4 is-offset-4 logo logo-lg"></div>
+            </div>
+            <form action="">
+                <div class="field">
+                    <div class="control">
+                        <h4 class="title is-4 sub-color">남은 시간</h4>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <h1 class="title">솔트레인 치약 6입</h1>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <div class="line"></div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <h5 class="subtitle is-5">
+                            세명 모여서 두 개씩 나눠서 쓰면 좋을 것 같아요.
+                            6개에 40000원, 인당 13000원(제가 천원 더 낼게요🤨)
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <button class="button half link-color">제품링크</button>
+                    </div>
+                </div>
+
+                <div class="field link-field">
+                    <div class="control">
+                        <p>
+                            참여인원 <span id="current">1</span> /
+                            <span id="minimum">3</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <button class="button half-width main-bg-color">
+                            참여
+                        </button>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <p class="help">⚠️참여시 오픈 채팅방으로 연결됩니다.</p>
+                    </div>
+                </div>
+            </form>
+        </div>
     </body>
 </html>
