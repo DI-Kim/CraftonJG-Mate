@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script
+            src="https://kit.fontawesome.com/c9149b938d.js"
+            crossorigin="anonymous"
+        ></script>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+        />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="./static/style.css" />
+        <title>배달의 MATE | 로그인</title>
+    </head>
+    <body>
+        <div class="container is-fluid">
+            <div class="columns is-half is-offset-one-quarter">
+                <div class="column is-4 is-offset-4 logo logo-lg"></div>
+            </div>
+
+            <form action="">
+                <!-- input class에 is-success 혹은 is-danger 로 상태 나타내기 -->
+                <div class="field padding-30">
+                    <div class="control has-icons-left has-icons-right">
+                        <input class="input" type="text" placeholder="ID" />
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <span class="icon is-small is-right">
+                            <i class="fas fa-check"></i>
+                        </span>
+                    </div>
+                    <!-- <p class="help is-success">This username is available</p> -->
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="비밀번호"
+                        />
+                    </div>
+                </div>
+
+                <div class="half-flex field">
+                    <div class="control half sub-bg-color">
+                        <button class="button half-width sub-bg-color">
+                            회원가입
+                        </button>
+                    </div>
+                    <div class="control half">
+                        <button class="button half-width main-bg-color">
+                            로그인
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

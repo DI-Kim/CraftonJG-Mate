@@ -1,0 +1,97 @@
+@media (min-width: 700px) {
+    .field,
+    .card {
+        width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+body {
+    background-color: #fff6f0;
+}
+.container {
+    padding-top: 70px;
+}
+.margin-50 {
+    margin-top: 50px;
+}
+.padding-30 {
+    padding-top: 30px;
+}
+.main-color {
+    color: #dffd06;
+}
+.main-bg-color {
+    color: black;
+    background-color: #dffd06;
+}
+.sub-color {
+    color: #e74c3c;
+}
+.sub-bg-color {
+    color: white;
+    background-color: #e74c3c;
+}
+.half-flex {
+    display: flex;
+    justify-content: space-between;
+}
+.half-flex-btn {
+    margin-right: auto;
+    margin-left: auto;
+}
+.half {
+    width: 47%;
+}
+.half-width {
+    width: 100%;
+}
+.container {
+    min-height: 100vh;
+}
+.card-list {
+    overflow: auto;
+}
+.logo {
+    height: 150px;
+    width: 150px;
+    background-image: url("../static/logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    margin: 0px auto 50px;
+}
+.logo-lg {
+    height: 200px;
+    width: 200px;
+}
+
+.profile {
+    background-color: aqua;
+    padding: 10px;
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    border-radius: 10px;
+}
+#make-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid #dffd06;
+    color: #dffd06;
+}
+.make-btn-helper {
+    bottom: 30px;
+    right: 20px;
+    position: fixed;
+}
+.navbar-helper {
+    padding: 0 10%;
+}
+.hide {
+    display: none;
+}
