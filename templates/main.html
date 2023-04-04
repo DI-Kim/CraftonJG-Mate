@@ -60,6 +60,17 @@
                         closeModal($target);
                     });
                 });
+                // (
+                //     document.querySelectorAll(
+                //         ".modal-background, .modal-close,  .cancle"
+                //     ) || []
+                // ).forEach(($close) => {
+                //     const $target = $close.closest(".modal");
+
+                //     $close.addEventListener("click", () => {
+                //         closeModal($target);
+                //     });
+                // });
 
                 // Add a keyboard event to close all modals
                 document.addEventListener("keydown", (event) => {
@@ -201,15 +212,87 @@
 
                 <div class="modal-card">
                     <header class="modal-card-head">
-                        <p class="modal-card-title">Modal title</p>
-                        <button class="delete" aria-label="close"></button>
+                        <p class="text-center">글 올리기</p>
                     </header>
                     <section class="modal-card-body">
-                        <!-- <!— Content … —> -->
+                        <div class="field">
+                            <input
+                                class="input"
+                                type="text"
+                                placeholder="제목(상호명,상품명)"
+                            />
+                        </div>
+                        <div class="field">
+                            <textarea
+                                class="textarea"
+                                placeholder="내용을 입력해주세요"
+                                rows="5"
+                            ></textarea>
+                        </div>
+                        <div class="field">
+                            <input
+                                class="input"
+                                type="text"
+                                placeholder="제품 링크(배민 링크,상품 링크 등)"
+                            />
+                        </div>
+                        <div class="field">
+                            <input
+                                class="input"
+                                type="text"
+                                placeholder="오픈카카오톡 링크"
+                            />
+                        </div>
+                        <!-- <div class="control"> -->
+                        <div class="columns half-flex">
+                            <div class="column half-flex half">
+                                <div class="field half-width">
+                                    <label style="color: black">기한 : </label>
+                                </div>
+                                <div class="hour-select half-width">
+                                    <select class="half-width">
+                                        <option>1시간</option>
+                                        <option>2시간</option>
+                                        <option>3시간</option>
+                                        <option>4시간</option>
+                                        <option>5시간</option>
+                                        <option>6시간</option>
+                                        <option>6시간</option>
+                                        <option>7시간</option>
+                                        <option>8시간</option>
+                                        <option>9시간</option>
+                                        <option>10시간</option>
+                                        <option>11시간</option>
+                                        <option>12시간</option>
+                                        <option>1일</option>
+                                        <option>2일</option>
+                                        <option>3일</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="column half half-flex">
+                                <div class="field half-width">
+                                    <label style="color: black"
+                                        >최소인원 :
+                                    </label>
+                                </div>
+                                <div class="min-select half-width">
+                                    <select class="half-width">
+                                        <option>2명</option>
+                                        <option>3명</option>
+                                        <option>4명</option>
+                                        <option>5명</option>
+                                        <option>6명</option>
+                                        <option>7명</option>
+                                        <option>8명</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </section>
-                    <footer class="modal-card-foot">
-                        <button class="button is-success">Save changes</button>
-                        <button class="button">Cancel</button>
+                    <footer class="modal-card-foot half-flex">
+                        <button class="button sub-bg-color half">취소</button>
+                        <button class="button main-bg-color half">등록</button>
                     </footer>
                 </div>
             </div>

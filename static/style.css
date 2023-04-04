@@ -1,4 +1,4 @@
-@media (min-width: 700px) {
+@media (min-width: 769px) {
     .field,
     .card {
         width: 600px;
@@ -6,6 +6,12 @@
         margin-right: auto;
     }
 }
+@media (max-width: 768px) {
+    .modal-card {
+        width: 90%;
+    }
+}
+
 body {
     background-color: #fff6f0;
 }
@@ -51,6 +57,11 @@ body {
 }
 .card-list {
     overflow: auto;
+}
+.text-center {
+    text-align: center;
+    display: inline-block;
+    width: 100%;
 }
 .logo {
     height: 150px;
