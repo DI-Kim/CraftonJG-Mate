@@ -6,20 +6,19 @@
         margin-right: auto;
     }
 }
-<<<<<<< HEAD
+
 @media (max-width: 768px) {
     .modal-card {
         width: 90%;
     }
 }
 
-=======
 .line {
     height: 1px;
     background-color: black;
     width: 100%;
 }
->>>>>>> refs/remotes/origin/main
+
 body {
     background-color: #fff6f0;
 }
@@ -85,11 +84,11 @@ body {
     height: 200px;
     width: 200px;
 }
-.link-color{
+.link-color {
     color: white;
-    background-color:#2ecc71;
+    background-color: #2ecc71;
 }
-.link-field{
+.link-field {
     margin-top: 70px;
 }
 .profile {
