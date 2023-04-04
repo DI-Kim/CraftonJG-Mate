@@ -1,0 +1,207 @@
+<!Doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Bulma 쓰는 법</title>
+
+    <!-- Bulma CSS 링크 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    
+    <!-- jQuery 라이브러리 링크 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Functions to open and close a modal
+            function openModal($el) {
+              $el.classList.add('is-active');
+            }
+          
+            function closeModal($el) {
+              $el.classList.remove('is-active');
+            }
+          
+            function closeAllModals() {
+              (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+                closeModal($modal);
+              });
+            }
+          
+            // Add a click event on buttons to open a specific modal
+            (document.querySelectorAll('.modal-button') || []).forEach(($trigger) => {
+              const modal = $trigger.dataset.target;
+              const $target = document.getElementById(modal);
+          
+              $trigger.addEventListener('click', () => {
+                openModal($target);
+              });
+            });
+          
+            // Add a click event on various child elements to close the parent modal
+            (document.querySelectorAll('.modal-background, .modal-close,  .cancle') || []).forEach(($close) => {
+              const $target = $close.closest('.modal');
+          
+              $close.addEventListener('click', () => {
+                closeModal($target);
+              });
+            });
+          
+            // Add a keyboard event to close all modals
+            document.addEventListener('keydown', (event) => {
+              const e = event || window.event;
+          
+              if (e.keyCode === 27) { 
+                closeAllModals();
+              }
+            });
+          });
+    </script>
+    <style>
+        
+        
+        .modal-card{
+            width: 400px;
+            height: 700px;
+            padding-top: 100px;
+            margin:10px;
+        }
+        .modal-background{
+            background-color: #e0e0e0;
+            width:450px;
+            height: 750px;
+        }
+
+        .btncolumns{
+            padding-top:15px;
+            
+            
+        }
+        
+        
+        
+       
+        
+    </style>
+</head>
+
+<body>
+    
+        <button class="button is-primary is-large modal-button" data-target="modal-write">
+            <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">예제 모달 실행</font> 
+            </font> 
+    
+        </button>
+
+        <div id="modal-write" class="modal">
+            <div class="modal-background" >
+        
+            <div class="modal-card">
+                <div class="field">
+                    <input class="input" type="text" placeholder="제목(상호명,상품명)">
+                </div>
+                <div class="field">
+                    <textarea class="textarea" placeholder="내용을 입력해주세요" rows="5"></textarea>
+                </div>
+                <div class="field">
+                    <input class="input" type="text" placeholder="제품 링크(배민 링크,상품 링크 등)">
+                </div>
+                <div class="field">
+                    <input class="input" type="text" placeholder="오픈카카오톡 링크">
+                </div>
+                    <div class="control">
+                        <div class="columns">
+                            <div class="column">
+                                <div class="field">
+                                    <label style="color:black">기한 : </label>
+                                </div>
+                            </div>  
+                            <div class="column">
+                                <div class="field">
+                                    <div class="hour-select">
+                                        <select>
+                                            <option>1시간</option>
+                                            <option>2시간</option>
+                                            <option>3시간</option>
+                                            <option>4시간</option>
+                                            <option>5시간</option>
+                                            <option>6시간</option>
+                                            <option>6시간</option>
+                                            <option>7시간</option>
+                                            <option>8시간</option>
+                                            <option>9시간</option>
+                                            <option>10시간</option>
+                                            <option>11시간</option>
+                                            <option>12시간</option>
+                                            <option>1일</option>
+                                            <option>2일</option>
+                                            <option>3일</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                            </div>
+                            <div class="column">
+                            </div>
+                        </div> 
+                    
+
+
+                                <div class="columns">
+                                    <div class="column">    
+                                        <div class="field">
+                                            <label style="color:black">최소인원 : </label>
+                                        </div>
+                                    </div>      
+                                    <div class="column">     
+                                                <div class="min-select">
+                                                    <select>
+                                                        <option>2명</option>
+                                                        <option>3명</option>
+                                                        <option>4명</option>
+                                                        <option>5명</option>
+                                                        <option>6명</option>
+                                                    </select>
+                                                </div>
+                                    </div>      
+                                    <div class="column">    
+                                        <div class="field">
+                                            <label style="color:black">최대인원 : </label>
+                                        </div>
+                                    </div>      
+                                    <div class="column">     
+                                                <div class="max-select">
+                                                    <select>
+                                                        <option>3명</option>
+                                                        <option>4명</option>
+                                                        <option>5명</option>
+                                                        <option>6명</option>
+                                                        <option>7명</option>
+                                                        <option>8명</option>
+                                                        <option>9명</option>
+                                                        <option>10명</option>
+                                                        <option>11명</option>
+                                                        <option>12명</option>
+                                                    </select>
+                                                </div>
+                                    </div>      
+                                </div>
+                </div>
+                
+                <div class="buttons btncolumns is-centered">
+                        <button class="button is-large cancle" style="width:150px; background-color:#e74c3c;">취소</button>
+                        <button class="button is-large submit" style="width:150px; background-color:#dffd06;">등록</button>
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+    
+</body>
+</html>
+
+
+
