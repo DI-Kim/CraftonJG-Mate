@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from flask import *
 from pymongo import MongoClient
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token, get_jwt_identity, unset_jwt_cookies, create_refresh_token)
@@ -6,12 +7,21 @@ import hashlib
 import datetime
 from http import HTTPStatus
 
+=======
+from flask import Flask, request, render_template, jsonify,url_for
+from pymongo import MongoClient
+from bs4 import BeautifulSoup
+import requests
+>>>>>>> eae8cadbb71d3ad2c70b6b6e648d703e6d196a49
 
 app = Flask(__name__)
 client = MongoClient('localhost', 27017)
 db = client.mate
 
+<<<<<<< HEAD
 SECRET_KEY = 'SPARTA'
+=======
+>>>>>>> eae8cadbb71d3ad2c70b6b6e648d703e6d196a49
 
 @app.route('/')
 def home():
@@ -75,25 +85,18 @@ def join_a():
 
 @app.route('/main')
 def main():
-    title = "솔트레인 치약 6입"
-    content = "세명 모여서 두 개씩 나눠서 쓰면 좋을 것 같아요. 6개에 40,000원, 인당 13,000원(제가 천원 더 낼게요)"
-    item_link = "https://www.naver.com/"
-    chat_link = "https://www.coupang.com"
-    time_exp = "13:00"
-    creator = "bigperson"
-    min_people = 3
-    cur_people = 1
-    # items = list(db.board.find({}, {'_id': False}).sort('time', -1))
-
-    return render_template('main.html', 
-                           title = title, content = content, 
-                           item_link = item_link, chat_link = chat_link, 
-                           time_exp = time_exp, creator =creator, 
-                           min_people = min_people, cur_people = cur_people )
-
+    img_logo = '../static/no_img.png'
+    items = list(db.board.find({}, {'_id': False}))
+    if not items :
+       db.counter.update_one({'_id':'num'},{'$set':{'seq':0}}) 
+    
+    return render_template('main.html', items = items, img_logo = img_logo )
+ 
 
 @app.route('/main', methods = ['POST'])
 def post_item():
+    counter = db.counters
+
     title =  request.form['title']
     content = request.form['content']
     item_link = request.form['item_link']
@@ -103,15 +106,35 @@ def post_item():
     creator = "bigperson"
     min_people = request.form['min_people']
     cur_people = 1
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+    data = requests.get(item_link, headers=headers)
+    soup = BeautifulSoup(data.text, 'html.parser')
+    og_image = soup.select_one('meta[property="og:image"]')
+    url_image = og_image['content']
+    
     db.board.insert_one({'title':title, 'content':content, 'item_link':item_link,
                          'chat_link':chat_link, 'time_exp':time_exp, 'creator':'bigperson',
-                         'min_people':min_people, 'cur_people':1})
+                         'min_people':min_people, 'cur_people':cur_people,
+                         'url_image':url_image, 'num' : counter.find_one_and_update(filter={"_id": "num"}, update={"$inc": {"seq": 1}}, new=True)["seq"]})
     return jsonify({'result': 'success'})
 
 
-@app.route('/detail')
+
+
+@app.route('/detail', methods=['GET'])
 def detail():
-    return render_template('detail.html')
+        
+        num = request.args.get('num')
+        
+        
+        result = list(db.board.find({"num": int(num)}))
+        
+        
+        return render_template('detail.html', result=result)
+  
+    
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port = 5700, debug = True)
+    app.run('0.0.0.0', port = 5600, debug = True)

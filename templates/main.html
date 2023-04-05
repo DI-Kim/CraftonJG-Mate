@@ -125,6 +125,25 @@
                     },
                 });
             }
+
+            
+
+            function showdetail(num) {
+                $.ajax({
+                    type: "GET",
+                    url: "/detail",
+                    data: {"num": num},
+                    success: function (response) {
+                        if (response) {
+                            // 전달받은 데이터가 있을 경우
+                            window.location.href = "/detail?num=" + num;
+                        } else {
+                            // 전달받은 데이터가 없을 경우
+                            alert("해당 게시물을 찾을 수 없습니다.");
+                        }
+                    }
+                })
+            }
         </script>
 
         <title>배달의 MATE</title>
@@ -151,12 +170,13 @@
             </div>
 
             <div id="card-list-continue">
-                <div class="card">
+                {% for i in items %}
+                <div class="card" id="{{i["num"]}}" onclick="showdetail('{{i["num"]}}')">
                     <div class="card-image">
                         <figure class="image is-4by3">
                             <img
-                                src="https://bulma.io/images/placeholders/1280x960.png"
-                                alt="Placeholder image"
+                                src='{% if i["url_image"] %}{{ i["url_image"] }}{% else %}{{img_logo}}{% endif %}'
+                                alt="이미지를 불러올 수 없습니다."
                             />
                         </figure>
                     </div>
@@ -164,21 +184,26 @@
                     <div class="card-content">
                         <div class="media">
                             <div class="media-content">
-                                <p class="title is-4">{{ title }}</p>
+                                <p class="is-4">{{ i["title"] }}</p>
                             </div>
+                            <time datetime="2016-1-1" class="sub-color"
+                                >{{ i["time_exp"] }}</time
+                            >
                         </div>
 
                         <div class="content">
-                            {{content}}
-                            <a href="{{item_link}}">item_link</a>
-                            <a href="#">#responsive</a>
-                            <br />
-                            <time datetime="2016-1-1">{{ time_exp }}</time>
+                            <p>
+                                참여인원
+                                <span id="current">{{ i["cur_people"] }}</span>
+                                /
+                                <span id="minimum">{{ i["min_people"] }}</span>
+                            </p>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-image">
                         <figure class="image is-4by3">
                             <img
@@ -205,11 +230,11 @@
                             >
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <div id="card-list-finish" class="hide">
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-image">
                         <figure class="image is-4by3">
                             <img
@@ -238,7 +263,7 @@
                             >
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <!-- make button -->
@@ -250,6 +275,7 @@
                 ></i>
             </div>
 
+            <!-- modal -->
             <div id="modal-write" class="modal">
                 <div class="modal-background"></div>
 
@@ -354,8 +380,7 @@
             // show hide tab
             const continueBtn = document.querySelector("#list-continue-btn");
             const finishBtn = document.getElementById("list-finish-btn");
-            console.log(continueBtn);
-            console.log(finishBtn);
+
             continueBtn.addEventListener("click", () => {
                 continueBtn.classList.add("is-active");
                 finishBtn.classList.remove("is-active");
@@ -368,6 +393,8 @@
                 $("#card-list-continue").hide();
                 $("#card-list-finish").show();
             });
+            
         </script>
     </body>
+
 </html>

@@ -16,22 +16,27 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <link rel="stylesheet" href="./static/style.css" />
         <title>배달의 MATE | 상세페이지</title>
+
+        <script>
+            
+        </script>
     </head>
     <body>
         <div class="container is-fluid">
-            <div class="columns is-half is-offset-one-quarter">
+           {% for i in result%}
+            <div class="columns is-half is-offset-one-quarter" onclick="window.location.href ='/main'">
                 <div class="column is-4 is-offset-4 logo logo-lg"></div>
             </div>
             <!-- <form action=""> -->
             <div class="field">
                 <div class="control">
-                    <h4 class="title is-4 sub-color">남은 시간</h4>
+                    <h4 class="title is-4 sub-color">{{i["time_exp"]}}</h4>
                 </div>
             </div>
 
             <div class="field">
                 <div class="control">
-                    <h1 class="title">솔트레인 치약 6입</h1>
+                    <h1 class="title">{{i["title"]}}</h1>
                 </div>
             </div>
             <div class="field">
@@ -42,23 +47,22 @@
             <div class="field">
                 <div class="control">
                     <h5 class="subtitle is-5">
-                        세명 모여서 두 개씩 나눠서 쓰면 좋을 것 같아요. 6개에
-                        40000원, 인당 13000원(제가 천원 더 낼게요🤨)
+                        {{i["content"]}}
                     </h5>
                 </div>
             </div>
 
             <div class="field">
                 <div class="control">
-                    <button class="button half link-color">제품링크</button>
+                    <a class="button half link-color" href="{{i["item_link"]}}">link</a>
                 </div>
             </div>
 
             <div class="field link-field">
                 <div class="control">
                     <p>
-                        참여인원 <span id="current">1</span> /
-                        <span id="minimum">3</span>
+                        참여인원 <span id="current">{{i["cur_people"]}}</span> /
+                        <span id="minimum">{{i["min_people"]}}</span>
                     </p>
                 </div>
             </div>
@@ -106,6 +110,7 @@
                     </div>
                 </div>
             </div>
+            {% endfor %}
             <!-- </form> -->
         </div>
         <script>
