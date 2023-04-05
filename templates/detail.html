@@ -18,11 +18,12 @@
         <title>배달의 MATE | 상세페이지</title>
 
         <script>
+            let user_name = "{{user_info}}";
             function joinGroup(num) {
                 $.ajax({
                     type: "POST",
                     url: "/detail",
-                    data: { num_give: num },
+                    data: { num_give: num, user_name: user_name },
                     success: function (response) {
                         if (response["result"] == "success") {
                             // 변경된 정보를 반영하기 위해 새로고침합니다.
@@ -31,8 +32,6 @@
                     },
                 });
             }
-
-            console.log("{{user_info}}");
         </script>
     </head>
     <body>
@@ -73,7 +72,10 @@
 
             <div class="field">
                 <div class="control">
-                    <a class="button half link-color" href="{{i['item_link']}}"
+                    <a
+                        class="button half link-color"
+                        target="_blank"
+                        href="{{i['item_link']}}"
                         >link</a
                     >
                 </div>
@@ -182,6 +184,20 @@
 
             hideShow();
             setInterval(hideShow, 10000);
+
+            function cancleGroup(num) {
+                $.ajax({
+                    type: "POST",
+                    url: "/detail",
+                    data: { num_give: num, user_name: user_name },
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            // 변경된 정보를 반영하기 위해 새로고침합니다.
+                            window.location.reload();
+                        }
+                    },
+                });
+            }
         </script>
     </body>
 </html>

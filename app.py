@@ -51,8 +51,8 @@ def login():
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60 * 60 * 24)    #언제까지 유효한지
         }
 #         # #jwt를 암호화
-#         # # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+        # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
         # token을 줍니다.   
 #             return jsonify({'result': 'success'})
         return jsonify({'result': 'success','token':token})
@@ -87,7 +87,7 @@ def main():
     print(user)
 
     img_logo = '../static/no_img.png'
-    items = list(db.board.find({}, {'_id': False}))
+    items = list(db.board.find({}, {'_id': False}).sort('time_exp',1))
     if not items :
        db.counter.update_one({'_id':'num'},{'$set':{'seq':0}}) 
     
@@ -142,6 +142,7 @@ def detail():
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
     user_info = payload['id']
+    
     user = db.user.find_one({'id':user_info}, {'_id': False})
     
     num = request.args.get('num')
@@ -158,30 +159,38 @@ def detail():
       
 @app.route('/detail',methods=['POST'])
 def joinGroup():
-    
     num_receive = request.form['num_give']
-    
-    
-    
+    print(num_receive)
+    user_info = request.form['user_name']
+    # print(user_info)
+    user = db.user.find_one({'id':user_info}, {'_id': False})
     result = db.board.find_one({'num':int(num_receive)})
-    new_cur_people = result['cur_people']+1
-    
-    db.board.update_one({'num':int(num_receive)},{'$set':{'cur_people':new_cur_people}}) 
-    db.user.update_one({},{'$addToSet':{'my_join':int(num_receive)}})
+    if int(num_receive) not in user['my_join']:
+        new_cur_people = result['cur_people']+1
+        db.board.update_one({'num':int(num_receive)},{'$set':{'cur_people':new_cur_people}})
+        db.user.find_one_and_update(filter={"id": user_info}, update={'$addToSet':{'my_join':int(num_receive)}})
+    else:
+        new_cur_people = result['cur_people']-1
+        db.board.update_one({'num':int(num_receive)},{'$set':{'cur_people':new_cur_people}})
+        db.user.find_one_and_update(filter={"id": user_info}, update={'$pull':{'my_join':int(num_receive)}})
+    # user = db.user.find_one({'id':user_info}, {'_id': False})
+    # user['my_join'].append(num_receive);
+    # print(user['my_join'])
+    # db.user.update_one({},{'$addToSet':{'my_join':int(num_receive)}})
     
     return jsonify({'result': 'success'})
 
-@app.route('/detail',methods=['POST'])
-def cancleGroup():
-    num_receive = request.form['num_give']
+# @app.route('/detail',methods=['POST'])
+# def cancleGroup():
+#     num_receive = request.form['num_give']
       
-    result = db.board.find_one({'num':int(num_receive)})
-    new_cur_people = result['cur_people']-1
+#     result = db.board.find_one({'num':int(num_receive)})
+#     new_cur_people = result['cur_people']-1
     
-    db.board.update_one({'num':int(num_receive)},{'$set':{'cur_people':new_cur_people}}) 
+#     db.board.update_one({'num':int(num_receive)},{'$set':{'cur_people':new_cur_people}}) 
        
     
-    return jsonify({'result': 'success'})
+#     return jsonify({'result': 'success'})
   
     
 if __name__ == '__main__':
