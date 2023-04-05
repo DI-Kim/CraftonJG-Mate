@@ -7,6 +7,7 @@ app = Flask(__name__)
 client = MongoClient('localhost', 27017)
 db = client.mate
 
+
 @app.route('/')
 def login():
     return render_template('login.html')
@@ -22,13 +23,15 @@ def main():
     img_logo = '../static/no_img.png'
     items = list(db.board.find({}, {'_id': False}))
     if not items :
-       db.board.update_one({'_id':'num'},{'$set':{'seq':0}})
+       db.counter.update_one({'_id':'num'},{'$set':{'seq':0}}) 
     
     return render_template('main.html', items = items, img_logo = img_logo )
-
+ 
 
 @app.route('/main', methods = ['POST'])
 def post_item():
+    counter = db.counters
+
     title =  request.form['title']
     content = request.form['content']
     item_link = request.form['item_link']
@@ -44,15 +47,12 @@ def post_item():
     data = requests.get(item_link, headers=headers)
     soup = BeautifulSoup(data.text, 'html.parser')
     og_image = soup.select_one('meta[property="og:image"]')
-    if url_image is not None:
-        url_image = og_image['content']
-    else:
-        url_image = None
-
+    url_image = og_image['content']
+    
     db.board.insert_one({'title':title, 'content':content, 'item_link':item_link,
                          'chat_link':chat_link, 'time_exp':time_exp, 'creator':'bigperson',
                          'min_people':min_people, 'cur_people':cur_people,
-                         'url_image':url_image, 'board_id' : db.board.find_one_and_update(filter={"_id": "num"}, update={"$inc": {"seq": 1}}, new=True)["seq"]})
+                         'url_image':url_image, 'num' : counter.find_one_and_update(filter={"_id": "num"}, update={"$inc": {"seq": 1}}, new=True)["seq"]})
     return jsonify({'result': 'success'})
 
 
