@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify,url_for
 from pymongo import MongoClient
 from bs4 import BeautifulSoup
 import requests
@@ -58,7 +58,17 @@ def post_item():
 
 @app.route('/detail')
 def detail():
+    
+    
     return render_template('detail.html')
+
+@app.route('/detail', methods=['POST'])
+def show_detail():
+    title = request.form['title']
+    
+    result = db.collection.find({"title":title})
+    
+    return render_template('detail.html',detail_data=result)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port = 5600, debug = True)
