@@ -14,6 +14,7 @@
             href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
         />
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
         <link rel="stylesheet" href="./static/style.css" />
 
         <!-- make item modal button -->
@@ -142,6 +143,11 @@
                     },
                 });
             }
+            // logout
+            function logout() {
+                $.removeCookie("mytoken", { path: "/" });
+                window.location.href = "/";
+            }
         </script>
 
         <title>배달의 MATE</title>
@@ -150,8 +156,10 @@
         <div class="container is-fluid">
             <div id="posting_num" class="hide">{{ items|length }}</div>
             <div class="profile">
-                <p>김동윤</p>
-                <p>블루</p>
+                <span class="tag is-black">{{user['name']}}</span>
+                <span class="tag is-black">{{user['class']}}</span>
+
+                <tag onclick="logout()" class="tag is-warning"> 로그아웃 </tag>
             </div>
             <div class="columns is-mobile">
                 <div class="column is-4 is-offset-4 logo"></div>
@@ -331,7 +339,6 @@
         </div>
 
         <script>
-            console.log("{{user_info}}");
             // show hide tab
             const continueBtn = document.querySelector("#list-continue-btn");
             const finishBtn = document.getElementById("list-finish-btn");

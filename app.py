@@ -18,7 +18,9 @@ SECRET_KEY = config.SECRET_KEY
 
 @app.route('/')
 def home():
+    token_receive = request.cookies.get('mytoken')
     try:
+        jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         return redirect(url_for("main"))
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -81,12 +83,15 @@ def main():
     token_receive = request.cookies.get('mytoken')
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
     user_info = payload['id']
+    user = db.user.find_one({'id':user_info}, {'_id': False})
+    print(user)
+
     img_logo = '../static/no_img.png'
     items = list(db.board.find({}, {'_id': False}))
     if not items :
        db.counter.update_one({'_id':'num'},{'$set':{'seq':0}}) 
     
-    return render_template('main.html', items = items, img_logo = img_logo, user_info = user_info )
+    return render_template('main.html', items = items, img_logo = img_logo, user = user )
  
 
 @app.route('/main', methods = ['POST'])
