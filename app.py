@@ -8,6 +8,7 @@ import requests
 from time import time
 
 app = Flask(__name__)
+# client = MongoClient('mongodb://bigPerson:872543@54.180.157.25', 27017)
 client = MongoClient('localhost', 27017)
 db = client.mate
 
@@ -20,7 +21,7 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.user.find_one({"id": payload['id']})
-        return redirect(url_for("main", name=user_info["name"]))
+        return redirect(url_for("main"))
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -71,7 +72,7 @@ def join_a():
     
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
     # pw_hash = request.form['pw_give']
-    db.user.insert_one({'id': id_receive, 'pw': pw_hash, 'name':name_receive, 'class': class_recieve})
+    db.user.insert_one({'id': id_receive, 'pw': pw_hash, 'name':name_receive, 'class': class_recieve, 'my_board': [], 'my_join': []})
     
     return jsonify({'result': 'success'})
         #   #   중복확인 // find로 같은 아이디 있는 경우 Fail 보내고 else> success 보내기

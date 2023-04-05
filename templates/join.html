@@ -17,34 +17,35 @@
         <title>배달의 MATE | 회원가입</title>
         <script>
             function joinbutton() {
-                
-                let join_Id=$("#joinId").val();
-                let join_Pw=$("#joinPw").val();
-                let join_Name=$("#joinName").val();
-                let join_Class=$("#joinClass").val();
-                let join_Pwcheck=$("#joinPwCheck").val();
-                if (join_Pw==join_Pwcheck){
+                let join_Id = $("#joinId").val();
+                let join_Pw = $("#joinPw").val();
+                let join_Name = $("#joinName").val();
+                let join_Class = $("#joinClass").val();
+                let join_Pwcheck = $("#joinPwCheck").val();
+                if (join_Pw == join_Pwcheck) {
                     $.ajax({
-                        type: 'POST',
-                        url: '/join',
-                        data: {id_give:join_Id, name_give:join_Name, class_give:join_Class, pw_give: join_Pw},
+                        type: "POST",
+                        url: "/join",
+                        data: {
+                            id_give: join_Id,
+                            name_give: join_Name,
+                            class_give: join_Class,
+                            pw_give: join_Pw,
+                        },
 
                         success: function (response) {
-                            if (response ["result"]=="success"){
+                            if (response["result"] == "success") {
                                 alert("회원가입 성공!");
-                                window.location.assign('/')
+                                window.location.assign("/");
+                            } else {
+                                alert("아이디가 중복되었습니다.");
                             }
-                            else{
-                                alert("아이디가 중복되었습니다.")
-                            }
-                        }
-                    })
-                }
-                else {
-                    alert("비밀번호 확인이 일치하지 않습니다.")
+                        },
+                    });
+                } else {
+                    alert("비밀번호 확인이 일치하지 않습니다.");
                 }
             }
-            
         </script>
     </head>
     <body>
@@ -57,7 +58,12 @@
                 <!-- input class에 is-success 혹은 is-danger 로 상태 나타내기 -->
                 <div class="field">
                     <div class="control has-icons-left has-icons-right">
-                        <input class="input" type="text" placeholder="ID" id="joinId"/>
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="ID"
+                            id="joinId"
+                        />
                         <span class="icon is-small is-left">
                             <i class="fas fa-user"></i>
                         </span>
@@ -69,7 +75,12 @@
                 </div>
                 <div class="field half-flex">
                     <div class="control half">
-                        <input class="input" type="text" placeholder="이름" id="joinName"/>
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="이름"
+                            id="joinName"
+                        />
                     </div>
                     <div class="control half">
                         <div class="select half-width">
@@ -104,14 +115,17 @@
 
                 <div class="field margin-50">
                     <div class="control">
-                        <button onclick="joinbutton()" class="button half-width main-bg-color">
+                        <submit
+                            onclick="joinbutton()"
+                            class="button half-width main-bg-color"
+                        >
                             회원가입
-                        </button>
+                        </submit>
                     </div>
                 </div>
                 <div class="field">
                     <div class="control">
-                        <a href='/' class="button half-width sub-bg-color">
+                        <a href="/" class="button half-width sub-bg-color">
                             뒤로가기
                         </a>
                     </div>
