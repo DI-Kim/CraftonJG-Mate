@@ -125,6 +125,23 @@
                     },
                 });
             }
+
+            function showdetail(num) {
+                $.ajax({
+                    type: "GET",
+                    url: "/detail",
+                    data: { num: num },
+                    success: function (response) {
+                        if (response) {
+                            // 전달받은 데이터가 있을 경우
+                            window.location.href = "/detail?num=" + num;
+                        } else {
+                            // 전달받은 데이터가 없을 경우
+                            alert("해당 게시물을 찾을 수 없습니다.");
+                        }
+                    },
+                });
+            }
         </script>
 
         <title>배달의 MATE</title>
@@ -153,7 +170,11 @@
 
             <div id="card-list-continue">
                 {% for i in items %}
-                <div class="card">
+                <div
+                    class="card"
+                    id="{{i['num']}}"
+                    onclick='showdetail({{i["num"]}})'
+                >
                     <div class="card-image">
                         <figure class="image is-4by3">
                             <img
@@ -325,6 +346,7 @@
                 $("#card-list-continue").hide();
                 $("#card-list-finish").show();
             });
+
             posting_num = parseInt($("#posting_num").text());
             let time_now = Date.now() / 60 / 1000; // 분단위 현재 시간
             for (i = 1; i <= posting_num; i++) {
