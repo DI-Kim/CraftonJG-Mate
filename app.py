@@ -6,13 +6,14 @@ from pymongo import MongoClient
 from bs4 import BeautifulSoup
 import requests
 from time import time
+import config
 
 app = Flask(__name__)
-# client = MongoClient('mongodb://bigPerson:872543@54.180.157.25', 27017)
+# client = MongoClient(config.MONGO_DB, 27017)
 client = MongoClient('localhost', 27017)
 db = client.mate
 
-SECRET_KEY = 'SPARTA'
+SECRET_KEY = config.SECRET_KEY
 
 
 @app.route('/')
