@@ -13,8 +13,30 @@
             href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
         />
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
         <link rel="stylesheet" href="./static/style.css" />
         <title>배달의 MATE | 로그인</title>
+        <script>
+            function loginbutton() {
+
+                let login_Id=$("#loginId").val();
+                let login_Pw=$("#loginPw").val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/login',
+                    data: {id_give:login_Id, pw_give:login_Pw},
+                    success: function (response){
+                        if (response ["result"]=="success"){
+                            $.cookie('mytoken', response['token']);
+                            alert("로그인 성공!")
+                            window.location.assign('/')
+                        } else {
+                            alert("로그인 오류!")
+                        }
+                    }
+                 })
+            }
+        </script>
     </head>
     <body>
         <div class="container is-fluid">
@@ -26,7 +48,7 @@
                 <!-- input class에 is-success 혹은 is-danger 로 상태 나타내기 -->
                 <div class="field padding-30">
                     <div class="control has-icons-left has-icons-right">
-                        <input class="input" type="text" placeholder="ID" />
+                        <input class="input" type="text" placeholder="ID" id="loginId" />
                         <span class="icon is-small is-left">
                             <i class="fas fa-user"></i>
                         </span>
@@ -41,22 +63,23 @@
                     <div class="control">
                         <input
                             class="input"
-                            type="text"
+                            type="password"
                             placeholder="비밀번호"
+                            id="loginPw"
                         />
                     </div>
                 </div>
 
                 <div class="half-flex field">
                     <div class="control half sub-bg-color">
-                        <button class="button half-width sub-bg-color">
+                        <a href="/join" class="button half-width sub-bg-color">
                             회원가입
-                        </button>
+                        </a>
                     </div>
                     <div class="control half">
-                        <button class="button half-width main-bg-color">
+                        <submit onclick="loginbutton()" class="button half-width main-bg-color">
                             로그인
-                        </button>
+                        </submit>
                     </div>
                 </div>
             </form>
