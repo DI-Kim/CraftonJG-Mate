@@ -195,9 +195,10 @@
                             >
                                 {{ i["time_exp"] }}
                             </div>
-                            <div class="sub-color" id="rest_time_{{i['num']}}">
-                                {{ i["time_exp"] }}
-                            </div>
+                            <div
+                                class="sub-color"
+                                id="rest_time_{{i['num']}}"
+                            ></div>
                         </div>
 
                         <div class="content">
@@ -337,42 +338,59 @@
             continueBtn.addEventListener("click", () => {
                 continueBtn.classList.add("is-active");
                 finishBtn.classList.remove("is-active");
-                $("#card-list-continue").show();
-                $("#card-list-finish").hide();
+                hideShow();
             });
             finishBtn.addEventListener("click", () => {
                 finishBtn.classList.add("is-active");
                 continueBtn.classList.remove("is-active");
-                $("#card-list-continue").hide();
-                $("#card-list-finish").show();
-            });
-
-            posting_num = parseInt($("#posting_num").text());
-            let time_now = Date.now() / 60 / 1000; // 분단위 현재 시간
-            for (i = 1; i <= posting_num; i++) {
-                time_exp = "#time_exp_" + i;
-                let rest_time = parseInt($(time_exp).text() - time_now);
-                let rest_time_minute = rest_time % 60;
-                let rest_time_hour = parseInt(rest_time / 60);
-                console.log(rest_time);
-                rest_time_id = "#rest_time_" + i;
-                $(rest_time_id).text(rest_time_hour + ":" + rest_time_minute);
-            }
-
-            setInterval(function () {
                 let time_now = Date.now() / 60 / 1000; // 분단위 현재 시간
                 for (i = 1; i <= posting_num; i++) {
+                    card_id = i;
                     time_exp = "#time_exp_" + i;
                     let rest_time = parseInt($(time_exp).text() - time_now);
                     let rest_time_minute = rest_time % 60;
                     let rest_time_hour = parseInt(rest_time / 60);
-                    console.log(rest_time);
+
                     rest_time_id = "#rest_time_" + i;
-                    $(rest_time_id).text(
-                        rest_time_hour + ":" + rest_time_minute
-                    );
+                    if (rest_time < 0) {
+                        $(rest_time_id).text("공동구매 종료");
+                        $("#" + i).show();
+                    } else {
+                        $(rest_time_id).text(
+                            rest_time_hour + ":" + rest_time_minute
+                        );
+                        $("#" + i).hide();
+                    }
                 }
-            }, 6000);
+            });
+
+            posting_num = parseInt($("#posting_num").text());
+            function hideShow() {
+                let time_now = Date.now() / 60 / 1000; // 분단위 현재 시간
+                for (i = 1; i <= posting_num; i++) {
+                    card_id = i;
+                    time_exp = "#time_exp_" + i;
+                    let rest_time = parseInt($(time_exp).text() - time_now);
+                    let rest_time_minute = rest_time % 60;
+                    let rest_time_hour = parseInt(rest_time / 60);
+
+                    rest_time_id = "#rest_time_" + i;
+                    if (rest_time < 0) {
+                        $(rest_time_id).text("공동구매 종료");
+                        $("#" + i).hide();
+                    } else {
+                        $(rest_time_id).text(
+                            String(rest_time_hour).padStart(2, "0") +
+                                ":" +
+                                String(rest_time_minute).padStart(2, "0")
+                        );
+                        $("#" + i).show();
+                    }
+                }
+            }
+
+            hideShow();
+            setInterval(hideShow, 10000);
         </script>
     </body>
 </html>

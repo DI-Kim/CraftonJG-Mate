@@ -17,20 +17,25 @@
         <link rel="stylesheet" href="./static/style.css" />
         <title>배달의 MATE | 상세페이지</title>
 
-        <script>
-            
-        </script>
+        <script></script>
     </head>
     <body>
         <div class="container is-fluid">
-           {% for i in result%}
-            <div class="columns is-half is-offset-one-quarter" onclick="window.location.href ='/main'">
+            {% for i in result%}
+            <div id="posting_num" class="hide">{{ i['num'] }}</div>
+            <div
+                class="columns is-half is-offset-one-quarter"
+                onclick="window.location.href ='/main'"
+            >
                 <div class="column is-4 is-offset-4 logo logo-lg"></div>
             </div>
             <!-- <form action=""> -->
             <div class="field">
                 <div class="control">
-                    <h4 class="title is-4 sub-color">{{i["time_exp"]}}</h4>
+                    <div class="sub-color hide" id="time_exp_{{i['num']}}">
+                        {{ i["time_exp"] }}
+                    </div>
+                    <div class="sub-color" id="rest_time_{{i['num']}}"></div>
                 </div>
             </div>
 
@@ -46,15 +51,15 @@
             </div>
             <div class="field">
                 <div class="control">
-                    <h5 class="subtitle is-5">
-                        {{i["content"]}}
-                    </h5>
+                    <h5 class="subtitle is-5">{{i["content"]}}</h5>
                 </div>
             </div>
 
             <div class="field">
                 <div class="control">
-                    <a class="button half link-color" href="{{i["item_link"]}}">link</a>
+                    <a class="button half link-color" href="{{i['item_link']}}"
+                        >link</a
+                    >
                 </div>
             </div>
 
@@ -114,19 +119,31 @@
             <!-- </form> -->
         </div>
         <script>
-            // show hide tab
-            const joinBtn = document.querySelector("#join-btn");
-            const cancleBtn = document.getElementById("cancle-btn");
-            console.log(joinBtn);
-            console.log(cancleBtn);
-            joinBtn.addEventListener("click", () => {
-                $("#cancle-detail").show();
-                $("#join-detail").hide();
-            });
-            cancleBtn.addEventListener("click", () => {
-                $("#cancle-detail").hide();
-                $("#join-detail").show();
-            });
+            posting_num = parseInt($("#posting_num").text());
+            function hideShow() {
+                let time_now = Date.now() / 60 / 1000; // 분단위 현재 시간
+                card_id = posting_num;
+                time_exp = "#time_exp_" + posting_num;
+                let rest_time = parseInt($(time_exp).text() - time_now);
+                let rest_time_minute = rest_time % 60;
+                let rest_time_hour = parseInt(rest_time / 60);
+
+                rest_time_id = "#rest_time_" + posting_num;
+                if (rest_time < 0) {
+                    $(rest_time_id).text("공동구매 종료");
+                    $("#" + posting_num).hide();
+                } else {
+                    $(rest_time_id).text(
+                        String(rest_time_hour).padStart(2, "0") +
+                            ":" +
+                            String(rest_time_minute).padStart(2, "0")
+                    );
+                    $("#" + posting_num).show();
+                }
+            }
+
+            hideShow();
+            setInterval(hideShow, 10000);
         </script>
     </body>
 </html>
