@@ -91,15 +91,7 @@
                 let chat_link = $("#chat-link").val();
                 let time_exp = $("#item-time").val();
                 let min_people = $("#item-min-people").val();
-
-                console.log(
-                    title,
-                    content,
-                    item_link,
-                    chat_link,
-                    time_exp,
-                    min_people
-                );
+                let user = "{{user['id']}}";
 
                 $.ajax({
                     type: "POST",
@@ -111,6 +103,7 @@
                         chat_link,
                         time_exp,
                         min_people,
+                        user,
                     },
                     success: function (response) {
                         if (response["result"] == "success") {
@@ -360,7 +353,12 @@
                     let rest_time_hour = parseInt(rest_time / 60);
 
                     rest_time_id = "#rest_time_" + i;
-                    if (rest_time < 0) {
+
+                    let cur_people_id = "#current_" + i;
+                    let min_people_id = "#minimum_" + i;
+                    cur_people = parseInt($(cur_people_id).text());
+                    min_people = parseInt($(min_people_id).text());
+                    if (rest_time < 0 || cur_people == min_people) {
                         $(rest_time_id).text("공동구매 종료");
                         $("#" + i).show();
                     } else {
@@ -370,6 +368,7 @@
                         $("#" + i).hide();
                     }
                 }
+                clearInterval(interval);
             });
 
             posting_num = parseInt($("#posting_num").text());
@@ -383,7 +382,12 @@
                     let rest_time_hour = parseInt(rest_time / 60);
 
                     rest_time_id = "#rest_time_" + i;
-                    if (rest_time < 0) {
+
+                    let cur_people_id = "#current_" + i;
+                    let min_people_id = "#minimum_" + i;
+                    cur_people = parseInt($(cur_people_id).text());
+                    min_people = parseInt($(min_people_id).text());
+                    if (rest_time < 0 || cur_people == min_people) {
                         $(rest_time_id).text("공동구매 종료");
                         $("#" + i).hide();
                     } else {
@@ -398,7 +402,10 @@
             }
 
             hideShow();
-            setInterval(hideShow, 10000);
+
+            if (finishBtn.classList.contains("is-active")) {
+                let interval = setInterval(hideShow, 10000);
+            }
         </script>
     </body>
 </html>

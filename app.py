@@ -105,7 +105,7 @@ def post_item():
     time_exp = request.form['time_exp']
     expire_time = int((time() / 60) + (float(time_exp) * 60)) # 만료 기한 ( 분단위 )
     # creator 를 알아볼만한 정보가 필요함
-    creator = "bigperson"
+    creator = request.form['user']
     min_people = request.form['min_people']
     cur_people = 1
 
@@ -115,25 +115,73 @@ def post_item():
     soup = BeautifulSoup(data.text, 'html.parser')
     og_image = soup.select_one('meta[property="og:image"]')
     url_image = og_image['content']
+    num_give = counter.find_one_and_update(filter={"_id": "num"}, update={"$inc": {"seq": 1}}, new=True)["seq"]
     
     db.board.insert_one({'title':title, 'content':content, 'item_link':item_link,
-                         'chat_link':chat_link, 'time_exp':expire_time, 'creator':'bigperson',
+                         'chat_link':chat_link, 'time_exp':expire_time, 'creator':creator,
                          'min_people':min_people, 'cur_people':cur_people,
-                         'url_image':url_image, 'num' : counter.find_one_and_update(filter={"_id": "num"}, update={"$inc": {"seq": 1}}, new=True)["seq"]})
+                         'url_image':url_image, 'num' : num_give})
+    # db.user.update_one({},{'$addToSet':{'my_board':num_give}})
     return jsonify({'result': 'success'})
 
 
+# @app.route('/detail', methods=['GET'])
+# def detail():
+#         token_receive = request.cookies.get('mytoken')
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#         user_info = payload['id']
+        
+#         num = request.args.get('num')
+        
+#         result = list(db.board.find({"num": int(num)}))
+        
+#         return render_template('detail.html', result=result, user_info = user_info)
+
 @app.route('/detail', methods=['GET'])
 def detail():
-        token_receive = request.cookies.get('mytoken')
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = payload['id']
-        
-        num = request.args.get('num')
-        
-        result = list(db.board.find({"num": int(num)}))
-        
-        return render_template('detail.html', result=result, user_info = user_info)
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_info = payload['id']
+    user = db.user.find_one({'id':user_info}, {'_id': False})
+    
+    num = request.args.get('num')
+    
+    result = list(db.board.find({"num": int(num)}))
+
+    my_join_list = user['my_join']
+
+    
+
+    
+    return render_template('detail.html', result=result,my_join_list = my_join_list, user_info = user_info)
+
+      
+@app.route('/detail',methods=['POST'])
+def joinGroup():
+    
+    num_receive = request.form['num_give']
+    
+    
+    
+    result = db.board.find_one({'num':int(num_receive)})
+    new_cur_people = result['cur_people']+1
+    
+    db.board.update_one({'num':int(num_receive)},{'$set':{'cur_people':new_cur_people}}) 
+    db.user.update_one({},{'$addToSet':{'my_join':int(num_receive)}})
+    
+    return jsonify({'result': 'success'})
+
+@app.route('/detail',methods=['POST'])
+def cancleGroup():
+    num_receive = request.form['num_give']
+      
+    result = db.board.find_one({'num':int(num_receive)})
+    new_cur_people = result['cur_people']-1
+    
+    db.board.update_one({'num':int(num_receive)},{'$set':{'cur_people':new_cur_people}}) 
+       
+    
+    return jsonify({'result': 'success'})
   
     
 if __name__ == '__main__':

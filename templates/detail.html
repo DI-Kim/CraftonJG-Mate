@@ -18,6 +18,20 @@
         <title>배달의 MATE | 상세페이지</title>
 
         <script>
+            function joinGroup(num) {
+                $.ajax({
+                    type: "POST",
+                    url: "/detail",
+                    data: { num_give: num },
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            // 변경된 정보를 반영하기 위해 새로고침합니다.
+                            window.location.reload();
+                        }
+                    },
+                });
+            }
+
             console.log("{{user_info}}");
         </script>
     </head>
@@ -68,30 +82,19 @@
             <div class="field link-field">
                 <div class="control">
                     <p>
-                        참여인원 <span id="current">{{i["cur_people"]}}</span> /
-                        <span id="minimum">{{i["min_people"]}}</span>
+                        참여인원
+                        <span id="current_{{i['num']}}"
+                            >{{i["cur_people"]}}</span
+                        >
+                        /
+                        <span id="minimum_{{i['num']}}"
+                            >{{i["min_people"]}}</span
+                        >
                     </p>
                 </div>
             </div>
-
-            <div id="join-detail">
-                <div class="field">
-                    <div class="control">
-                        <button
-                            class="button half-width main-bg-color"
-                            id="join-btn"
-                        >
-                            참여
-                        </button>
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <p class="help">⚠️참여시 오픈 채팅방으로 연결됩니다.</p>
-                    </div>
-                </div>
-            </div>
-            <div id="cancle-detail" class="hide">
+            {% endfor %} {% if result[0]["num"] in my_join_list %}
+            <div id="cancle-detail">
                 <div class="field">
                     <div class="control">
                         <button class="button half-width main-bg-color">
@@ -104,6 +107,7 @@
                         <button
                             class="button half-width sub-bg-color"
                             id="cancle-btn"
+                            onclick="cancleGroup({{result[0]['num']}})"
                         >
                             취소
                         </button>
@@ -117,7 +121,30 @@
                     </div>
                 </div>
             </div>
-            {% endfor %}
+            {% else %}
+
+            <div id="join-detail">
+                <div class="field">
+                    <div class="control">
+                        <button
+                            class="button half-width main-bg-color"
+                            id="join-btn"
+                            onclick="joinGroup({{result[0]['num']}})"
+                        >
+                            참여
+                        </button>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <p class="help" id="help-message">
+                            ⚠️참여시 오픈 채팅방으로 연결됩니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
             <!-- </form> -->
         </div>
         <script>
@@ -130,10 +157,19 @@
                 let rest_time_minute = rest_time % 60;
                 let rest_time_hour = parseInt(rest_time / 60);
 
+                let rest_time_id = "#rest_time_" + posting_num;
+
+                let cur_people_id = "#current_" + posting_num;
+                let min_people_id = "#minimum_" + posting_num;
+                cur_people = parseInt($(cur_people_id).text());
+                min_people = parseInt($(min_people_id).text());
+
                 rest_time_id = "#rest_time_" + posting_num;
-                if (rest_time < 0) {
+                if (rest_time < 0 || cur_people == min_people) {
                     $(rest_time_id).text("공동구매 종료");
                     $("#" + posting_num).hide();
+                    $("#join-btn").hide();
+                    $("#help-message").hide();
                 } else {
                     $(rest_time_id).text(
                         String(rest_time_hour).padStart(2, "0") +
