@@ -56,19 +56,20 @@ def post_item():
     return jsonify({'result': 'success'})
 
 
-@app.route('/detail')
-def detail():
-    
-    
-    return render_template('detail.html')
 
-@app.route('/detail', methods=['POST'])
-def show_detail():
-    title = request.form['title']
+
+@app.route('/detail', methods=['GET'])
+def detail():
+        
+        num = request.args.get('num')
+        
+        
+        result = list(db.board.find({"num": int(num)}))
+        
+        
+        return render_template('detail.html', result=result)
+  
     
-    result = db.collection.find({"title":title})
-    
-    return render_template('detail.html',detail_data=result)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port = 5600, debug = True)

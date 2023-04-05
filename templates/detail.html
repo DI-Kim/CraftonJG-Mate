@@ -23,19 +23,20 @@
     </head>
     <body>
         <div class="container is-fluid">
-            <div class="columns is-half is-offset-one-quarter">
+           {% for i in result%}
+            <div class="columns is-half is-offset-one-quarter" onclick="window.location.href ='/main'">
                 <div class="column is-4 is-offset-4 logo logo-lg"></div>
             </div>
             <!-- <form action=""> -->
             <div class="field">
                 <div class="control">
-                    <h4 class="title is-4 sub-color">{{detail_data["time_exp"]}}</h4>
+                    <h4 class="title is-4 sub-color">{{i["time_exp"]}}</h4>
                 </div>
             </div>
 
             <div class="field">
                 <div class="control">
-                    <h1 class="title">{{detail_data["title"]}}</h1>
+                    <h1 class="title">{{i["title"]}}</h1>
                 </div>
             </div>
             <div class="field">
@@ -46,22 +47,22 @@
             <div class="field">
                 <div class="control">
                     <h5 class="subtitle is-5">
-                        {{detail_data["content"]}}
+                        {{i["content"]}}
                     </h5>
                 </div>
             </div>
 
             <div class="field">
                 <div class="control">
-                    <button class="button half link-color">{{detail_data["item_link"]}}</button>
+                    <a class="button half link-color" href="{{i["item_link"]}}">link</a>
                 </div>
             </div>
 
             <div class="field link-field">
                 <div class="control">
                     <p>
-                        참여인원 <span id="current">{{detail_data["cur_people"]}}</span> /
-                        <span id="minimum">{{detail_data["min_people"]}}</span>
+                        참여인원 <span id="current">{{i["cur_people"]}}</span> /
+                        <span id="minimum">{{i["min_people"]}}</span>
                     </p>
                 </div>
             </div>
@@ -109,6 +110,7 @@
                     </div>
                 </div>
             </div>
+            {% endfor %}
             <!-- </form> -->
         </div>
         <script>
